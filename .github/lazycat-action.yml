@@ -21,3 +21,32 @@ stores:
     name: "TrackFerry"
   official:
     enabled: true
+    create_if_missing: true
+    skip_if_version_exists: true
+    application:
+      language: zh
+      name: TrackFerry
+      brief: 小爱音箱局域网取歌工具
+      description: TrackFerry 通过小爱音箱的开放接口，将本地或局域网音乐推送到小爱音箱播放，全部数据留在局域网内，不经过云端。
+      keywords: 小爱音箱, 音乐, 局域网, 智能, 音箱
+      source: https://github.com/madrays/trackferry
+      source_author: madrays
+      support_pc: true
+      support_mobile: true
+      screenshot_pc_files:
+        - .github/screenshots/pc-home.png
+        - .github/screenshots/pc-flow.png
+        - .github/screenshots/pc-flow-online.png
+        - .github/screenshots/pc-library.png
+        - .github/screenshots/pc-speakers.png
+        - .github/screenshots/pc-say.png
+        - .github/screenshots/pc-settings.png
+      screenshot_mobile_files:
+        - .github/screenshots/mobile-home.png
+        - .github/screenshots/mobile-flow.png
+        - .github/screenshots/mobile-library.png
+        - .github/screenshots/mobile-speakers.png
+        - .github/screenshots/mobile-settings.png
+        - .github/screenshots/mobile-search.png
+        - .github/screenshots/mobile-song.png
+        - .github/screenshots/mobile-album.png

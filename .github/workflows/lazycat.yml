@@ -1,4 +1,4 @@
-name: Build and publish LazyCat app
+name: LazyCat LPK
 
 on:
   push:
@@ -9,14 +9,16 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   lazycat:
-    uses: ca-x/lazycat-github-action@v1
+    uses: ca-x/lazycat-github-action/.github/workflows/lazycat.yml@v1
     with:
       operation: auto
+      config: .github/lazycat-action.yml
+    # Organization Secrets must authorize this repository.
     secrets:
-      PRIVATE_APPSTORE_URL: ${{ secrets.PRIVATE_APPSTORE_URL }}
-      PRIVATE_APPSTORE_TOKEN: ${{ secrets.PRIVATE_APPSTORE_TOKEN }}
-      OFFICIAL_APPSTORE_URL: ${{ secrets.OFFICIAL_APPSTORE_URL }}
-      OFFICIAL_APPSTORE_TOKEN: ${{ secrets.OFFICIAL_APPSTORE_TOKEN }}
+      LZC_API_TOKEN: ${{ secrets.LZC_API_TOKEN }}
+      APPSTORE_URL: ${{ secrets.APPSTORE_URL }}
+      APPSTORE_TOKEN: ${{ secrets.APPSTORE_TOKEN }}
