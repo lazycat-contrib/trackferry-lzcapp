@@ -1,0 +1,71 @@
+application:
+  subdomain: trackferry
+  public_path:
+    - /
+  # TrackFerry 自带完整管理界面（此刻/流转/曲库/音箱/设置）
+  # 入口页：系统把入站 TCP 18561 转发到服务的 18561（ingress 同端口透传）
+  ingress:
+    - protocol: tcp
+      port: 18561
+      service: trackferry
+      publish_port: 18561
+      description: "TrackFerry 音箱取歌端口（小爱经局域网访问）"
+  # 管理界面走 upstreams（服务名直连）；音箱取歌走 ingress 透传的 18561 端口
+  # （系统为应用分配虚拟外部 IP，局域网设备用懒猫主机 IP:18561 即可达）
+  upstreams:
+    - location: /
+      backend: http://trackferry:18561/
+services:
+  trackferry:
+    # madrays/trackferry:1.5.0 ← 上游 Docker Hub tag（无 v 前缀）
+    image: docker.1ms.run/madrays/trackferry:1.5.0@sha256:6b3adc3420822b25485963d7410dcdd66698f48f1a4c051fa1b4b8387897786f
+    environment:
+      - TZ=Asia/Shanghai
+      # 音箱取歌的地址：默认懒猫主机内网 IP（与音箱同局域网可达）。
+      # 小爱从公网下发播放指令，随后直接访问这个地址的 /stream/ 取歌流，
+      # 所以必须填局域网 IP；多网卡或特殊网络时可在部署向导修改
+      - TRACKFERRY_URL={{ .U.host_url }}
+      - TRACKFERRY_LISTEN=:18561
+      - TRACKFERRY_TAKEOVER={{ .U.takeover_speakers }}
+      - TRACKFERRY_UPDATE_CHECK=off
+    # 容器把 /data 交给普通身份（10001）后降权运行
+    setup_script: |
+      mkdir -p /lzcapp/var/trackferry
+      chown -R 10001:10001 /lzcapp/var/trackferry
+    binds:
+      - /lzcapp/var/trackferry:/data
+    healthcheck:
+      test:
+        - CMD
+        - /trackferry
+        - healthcheck
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+usage: |
+  TrackFerry 让小爱音箱播放你 NAS 上的歌。说一句"播放潮汐来信"，它先查飞牛音乐，
+  再查酷我、酷狗、咪咕、网易云。音箱不用刷机。
+
+  首次设置：
+  1. 打开应用入口页，首次进入会要求填初始化码——在应用日志里找
+     （"首次登录初始化码"字样），设置管理密码。
+  2. 登录小米账号（米家扫码或账号密码，选绑定了音箱的账号）。
+  3. 在"设置"里登录飞牛音乐（fnOS 音乐应用的用户名密码）。
+  4. 音箱管理页里先把音箱设为"观察"模式试听，确认正常后改成"接管"。
+     接管前请先让 xiaomusic 等同类程序退出对这台音箱的控制。
+
+  网络说明（重要）：
+  - 音箱取歌需要访问懒猫主机的 18561 端口（局域网 TCP）。应用默认使用主机网络
+    监听该端口，与音箱同处局域网即可使用。
+  - TRACKFERRY_URL 指向懒猫主机的局域网地址，部署时自动生成；如网络结构特殊
+    可在应用终端编辑 /data/config.yaml 的 public_base_url 后重启应用。
+
+  支持的语音指令：
+  - 直接说歌名："播放潮汐来信"
+  - 连续点歌："换成周杰伦的版本" "换个版本" "收藏这首歌"
+  - "播放我的收藏" "播放某某歌单" "播放某位歌手的歌"
+
+  说明：
+  - 网易云等在线音源默认开启，可在设置里逐个关闭。
+  - 本应用是社区打包版本，上游项目 github.com/madrays/trackferry（MIT）。

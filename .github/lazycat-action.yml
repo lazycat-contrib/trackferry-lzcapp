@@ -1,0 +1,23 @@
+version: 1
+tracker:
+  images:
+    - id: trackferry
+      source: docker.io/madrays/trackferry
+      channel: custom
+      sort: semver
+      tag_regex: '^(\d+\.\d+\.\d+)$'
+      mirror: true
+      require_digest_match: true
+      version_source:
+        type: bump
+        bump: patch
+
+delivery:
+  mode: mirror
+
+stores:
+  private:
+    enabled: true
+    name: "TrackFerry"
+  official:
+    enabled: true

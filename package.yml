@@ -1,0 +1,20 @@
+package: community.lazycat.app.trackferry
+version: 1.5.0
+name: TrackFerry
+description: "Let Xiaomi smart speakers play music from your fnOS (Feiniu) music library and free online sources. Voice song requests on Xiao AI speakers, no flashing required."
+min_os_version: 1.5.0
+author: madrays
+license: MIT
+homepage: https://github.com/madrays/trackferry
+
+permissions:
+  required:
+    - net.internet
+
+locales:
+  zh:
+    name: "TrackFerry"
+    description: "让小爱音箱播放飞牛（fnOS）音乐曲库和免费在线音源。对小爱说歌名即可点歌，音箱无需刷机。先查飞牛曲库，再查酷我、酷狗、咪咕、网易云。"
+  en:
+    name: "TrackFerry"
+    description: "Let Xiaomi smart speakers play music from your fnOS (Feiniu) music library and free online sources. Voice song requests on Xiao AI speakers, no flashing required."

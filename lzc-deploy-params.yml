@@ -1,0 +1,22 @@
+params:
+  - id: host_url
+    type: string
+    name: "Speaker Access URL"
+    description: "LAN address speakers use to fetch songs, e.g. http://192.168.1.10:18561. Fill in the LazyCat host's LAN IP (same network as the Xiao AI speakers). Do not use 127.0.0.1 or a public domain."
+    optional: false
+
+  - id: takeover_speakers
+    type: string
+    name: "Allowed Takeover Speakers"
+    description: "Which speakers may be set to takeover mode: * for all, or a comma-separated part of speaker names like 'study,living room'. Individual mode is still chosen per speaker in the app."
+    default_value: "*"
+    optional: false
+
+locales:
+  zh:
+    host_url:
+      name: "音箱取歌地址"
+      description: "音箱从局域网取歌的地址，如 http://192.168.1.10:18561（懒猫主机的内网 IP + 18561 端口，需与小爱音箱同一局域网）。不要填 127.0.0.1 或外网域名。"
+    takeover_speakers:
+      name: "允许接管的音箱"
+      description: "哪些音箱可以设为接管模式：* 表示全部放行；也可以填音箱名字的一部分，逗号分隔，如「书房,客厅」。实际是否接管仍在应用里逐台选择。"

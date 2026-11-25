@@ -1,0 +1,22 @@
+name: Build and publish LazyCat app
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 2 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  lazycat:
+    uses: ca-x/lazycat-github-action@v1
+    with:
+      operation: auto
+    secrets:
+      PRIVATE_APPSTORE_URL: ${{ secrets.PRIVATE_APPSTORE_URL }}
+      PRIVATE_APPSTORE_TOKEN: ${{ secrets.PRIVATE_APPSTORE_TOKEN }}
+      OFFICIAL_APPSTORE_URL: ${{ secrets.OFFICIAL_APPSTORE_URL }}
+      OFFICIAL_APPSTORE_TOKEN: ${{ secrets.OFFICIAL_APPSTORE_TOKEN }}
