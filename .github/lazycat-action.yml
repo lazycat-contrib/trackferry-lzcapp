@@ -1,28 +1,38 @@
 version: 1
-tracker:
-  images:
-    - id: trackferry
-      source: docker.io/madrays/trackferry
-      channel: custom
-      sort: semver
-      tag_regex: '^(\d+\.\d+\.\d+)$'
-      mirror: true
-      require_digest_match: true
-      version_source:
-        type: bump
-        bump: patch
 
-delivery:
-  mode: mirror
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/trackferry.lpk
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: trackferry
+    bump: patch
+
+images:
+  - id: trackferry
+    target: service
+    service: trackferry
+    source: docker.io/madrays/trackferry
+    channel: custom
+    sort: semver
+    tag_regex: '^(\d+\.\d+\.\d+)$'
+    delivery:
+      mode: lazycat
 
 stores:
-  private:
-    enabled: true
-    name: "TrackFerry"
   official:
     enabled: true
-    create_if_missing: true
+    continue_if_newer_version: true
     skip_if_version_exists: true
+    create_if_missing: true
+    retry:
+      enabled: true
     application:
       language: zh
       name: TrackFerry
@@ -50,3 +60,6 @@ stores:
         - .github/screenshots/mobile-search.png
         - .github/screenshots/mobile-song.png
         - .github/screenshots/mobile-album.png
+  private:
+    enabled: true
+    skip_if_version_exists: false
