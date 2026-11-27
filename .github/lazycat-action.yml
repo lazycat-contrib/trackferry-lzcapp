@@ -12,7 +12,6 @@ update:
   version_source:
     type: image
     image: trackferry
-    bump: patch
 
 images:
   - id: trackferry
